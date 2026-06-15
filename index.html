@@ -77,14 +77,20 @@
     // narrower screens. tabular-nums keeps the width constant per config, so we
     // only need to fit on load + resize.
     function fitTime() {
-      timeEl.style.fontSize = "20vw";
-      const w = timeEl.scrollWidth || 1;
-      let vw = 20 * (window.innerWidth * 0.94) / w;
-      vw = Math.max(6, Math.min(24, vw));
-      timeEl.style.fontSize = vw.toFixed(1) + "vw";
+      // Start large, then shrink in steps until the (nowrap) time fits the
+      // viewport width. getBoundingClientRect() forces a reflow each step, so the
+      // measurement is always current — robust across 12/24h, seconds, any width.
+      let size = 22;
+      timeEl.style.fontSize = size + "vw";
+      for (let i = 0; i < 40 && size > 5 &&
+           timeEl.getBoundingClientRect().width > window.innerWidth * 0.94; i++) {
+        size -= 0.5;
+        timeEl.style.fontSize = size + "vw";
+      }
     }
     tick();
     fitTime();
+    setTimeout(fitTime, 60);              // re-fit once layout/fonts settle
     window.addEventListener("resize", fitTime);
     setInterval(tick, showSec ? 1000 : 15000);
   </script>
