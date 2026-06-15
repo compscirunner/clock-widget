@@ -11,7 +11,7 @@ This repo does double duty:
 
 ## Files
 - `index.html` — the whole widget, one self-contained, commented file.
-- `meta-portal-widget.json` — the manifest (uses `entry`, so it's served via jsDelivr — no hosting setup).
+- `meta-portal-widget.json` — the manifest (uses `entry`, so it's served via a CDN — no hosting setup).
 - `meta-portal-widget.schema.json` — the manifest contract (for humans and AI assistants).
 - `MAKE-A-WIDGET.md` — how anyone (or their AI) builds a new widget from this example.
 

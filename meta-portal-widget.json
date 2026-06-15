@@ -7,8 +7,8 @@
   "author": "Portal Widgets example",
   "homepage": "https://github.com/compscirunner/clock-widget",
   "config": [
-    { "key": "timezone", "type": "text", "label": "Time zone", "required": false,
-      "help": "IANA name like America/Boise. Blank = the Portal's local zone." },
+    { "key": "timezone", "type": "text", "label": "Time zone", "required": true,
+      "help": "IANA name, e.g. America/Boise, America/New_York, Europe/London." },
     { "key": "format", "type": "select", "label": "Hour format", "options": ["12", "24"], "default": "12" },
     { "key": "seconds", "type": "boolean", "label": "Show seconds", "default": "false" },
     { "key": "showDate", "type": "boolean", "label": "Show date", "default": "true" },

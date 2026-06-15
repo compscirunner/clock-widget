@@ -10,7 +10,7 @@
     "description": { "type": "string", "description": "One-line summary shown in the gallery." },
     "entry": {
       "type": "string",
-      "description": "Relative path to the widget's HTML, e.g. 'index.html'. The host serves it via jsDelivr from this repo, so NO hosting setup is needed. Use this for simple static widgets.",
+      "description": "Relative path to the widget's HTML, e.g. 'index.html'. The host serves it from this repo via a CDN (githack), so NO hosting setup is needed. Use this for simple static widgets.",
       "default": "index.html"
     },
     "url": {

@@ -21,9 +21,9 @@ A Portal widget is a **public GitHub repo** that:
    - **`index.html`** — one self-contained page (inline CSS + JS, no build step).
    - **`meta-portal-widget.json`** — the manifest (schema: `meta-portal-widget.schema.json` in this repo).
 
-The host serves the widget **via jsDelivr from the repo itself** when the manifest
-uses `"entry": "index.html"`, so **no GitHub Pages or other hosting setup is
-required.** Just create the repo, add the files, and tag it.
+The host serves the widget **from the repo itself via a CDN (githack)** when the
+manifest uses `"entry": "index.html"`, so **no GitHub Pages or other hosting setup
+is required.** Just create the repo, add the files, and tag it.
 
 ### `index.html` rules
 - One file; inline everything. No external dependencies unless you truly need them.
