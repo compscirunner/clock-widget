@@ -1,0 +1,35 @@
+name: pages
+
+# Publishes this widget to GitHub Pages so the Portal Widgets host can load it.
+# Because this repo is a template, a copy made with "Use this template" runs this
+# on its first push and AUTO-ENABLES Pages (actions/configure-pages enables it via
+# the repo's own GITHUB_TOKEN) — so the author doesn't have to configure hosting.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5   # enables Pages if not already on
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .                          # the widget is static; serve the repo root
+      - id: deploy
+        uses: actions/deploy-pages@v4

@@ -10,7 +10,7 @@
     "description": { "type": "string", "description": "One-line summary shown in the gallery." },
     "entry": {
       "type": "string",
-      "description": "Relative path to the widget's HTML, e.g. 'index.html'. The host serves it from this repo via a CDN (githack), so NO hosting setup is needed. Use this for simple static widgets.",
+      "description": "Relative path to the widget's HTML, e.g. 'index.html'. The host loads it from the repo's GitHub Pages site at https://<owner>.github.io/<repo>/<entry> (no per-repo URL needed; redirects to a custom domain if the owner has one). Enable Pages on the repo — the included pages workflow does this automatically. Use this for simple static widgets.",
       "default": "index.html"
     },
     "url": {

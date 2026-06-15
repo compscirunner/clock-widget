@@ -21,9 +21,12 @@ A Portal widget is a **public GitHub repo** that:
    - **`index.html`** — one self-contained page (inline CSS + JS, no build step).
    - **`meta-portal-widget.json`** — the manifest (schema: `meta-portal-widget.schema.json` in this repo).
 
-The host serves the widget **from the repo itself via a CDN (githack)** when the
-manifest uses `"entry": "index.html"`, so **no GitHub Pages or other hosting setup
-is required.** Just create the repo, add the files, and tag it.
+When the manifest uses `"entry": "index.html"`, the host loads the widget from its
+**GitHub Pages** site at `https://<owner>.github.io/<repo>/` — so the manifest needs
+no hard-coded URL (it works even if the repo is renamed or copied). You just have to
+turn Pages on; the steps below do it automatically (raw-CDN shortcuts like jsDelivr
+or githack don't work here — they serve `.html` as plain text or add a click-through
+page, so the widget wouldn't render).
 
 ### `index.html` rules
 - One file; inline everything. No external dependencies unless you truly need them.
@@ -52,18 +55,22 @@ Follow `meta-portal-widget.schema.json`. Minimal shape:
   as `{location.json}` / `{location.name}` / `{location.lat}` / `{location.lon}`.
 
 ### Publish it (the clean path — you have GitHub access)
+Include this repo's `.github/workflows/pages.yml` in the new repo (copy it as-is) —
+it auto-enables and deploys GitHub Pages on first push, so there's no manual hosting
+step. Then:
 ```bash
 gh repo create <user>/<name> --public --source=. --remote=origin --push
 gh api -X PUT repos/<user>/<name>/topics -f names[]=meta-portal-widget
 ```
-That's it — the topic is what makes it discoverable. (GitHub's search index can take
-a few minutes to pick up a new topic.)
+The Pages workflow runs on push (publishing to `https://<user>.github.io/<name>/`);
+the topic is what makes it discoverable. (Both Pages' first build and GitHub's topic
+search index take a couple of minutes.)
 
 ### No-agent fallback: "Use this template"
-A person without an assistant that has GitHub access can click **Use this template**
-on this repo, edit `index.html`, then **manually add the topic** `meta-portal-widget`
-in their new repo under **About → ⚙ → Topics**. (GitHub templates copy files but
-**not** topics, so this one click is required.)
+Click **Use this template** on this repo and edit `index.html`. The included Pages
+workflow auto-enables hosting on the first commit — so the only manual step is to
+**add the topic** `meta-portal-widget` in the new repo under **About → ⚙ → Topics**
+(GitHub templates copy files and workflows but **not** topics).
 
 ---
 
