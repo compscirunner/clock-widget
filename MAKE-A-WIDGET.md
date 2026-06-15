@@ -53,27 +53,30 @@ Follow `meta-portal-widget.schema.json`. Minimal shape:
 - For location-based widgets, use a field of `"type": "location"` with
   `"default": "@global.location"` (inherits the user's shared location); reference it
   as `{location.json}` / `{location.name}` / `{location.lat}` / `{location.lon}`.
-- Add a **`screenshot.png`** (≈16:9) to the repo and list it as
+- **Recommended: add a `screenshot.png`** (≈16:9) and list it as
   `"screenshots": ["screenshot.png"]` — it becomes the gallery thumbnail on the Portal
-  and on reportal.dev (otherwise the repo's GitHub social image is used).
+  and on reportal.dev. If you omit it, the repo's GitHub social image is used (works,
+  but a real screenshot looks far better — don't skip this).
 
 ### Publish it (the clean path — you have GitHub access)
-Include this repo's `.github/workflows/pages.yml` in the new repo (copy it as-is) —
-it auto-enables and deploys GitHub Pages on first push, so there's no manual hosting
-step. Then:
 ```bash
 gh repo create <user>/<name> --public --source=. --remote=origin --push
-gh api -X PUT repos/<user>/<name>/topics -f names[]=meta-portal-widget
+# Enable Pages — IMPORTANT: the workflow's own token CANNOT turn Pages on, so do it here:
+gh api -X POST repos/<user>/<name>/pages -f build_type=workflow
+# Make it discoverable:
+gh api -X PUT  repos/<user>/<name>/topics -f names[]=meta-portal-widget
 ```
-The Pages workflow runs on push (publishing to `https://<user>.github.io/<name>/`);
-the topic is what makes it discoverable. (Both Pages' first build and GitHub's topic
-search index take a couple of minutes.)
+The included `.github/workflows/pages.yml` then builds and publishes to
+`https://<user>.github.io/<name>/`. **Two things must be set that the workflow can't do
+for itself:** Pages must be enabled (the `pages` API call above), and the `meta-portal-widget`
+topic added (discovery). Both the first Pages build and GitHub's topic index take a
+couple of minutes.
 
 ### No-agent fallback: "Use this template"
-Click **Use this template** on this repo and edit `index.html`. The included Pages
-workflow auto-enables hosting on the first commit — so the only manual step is to
-**add the topic** `meta-portal-widget` in the new repo under **About → ⚙ → Topics**
-(GitHub templates copy files and workflows but **not** topics).
+Click **Use this template** on this repo and edit `index.html`, then do the two manual
+steps the template can't copy:
+1. **Settings → Pages → Source: "GitHub Actions"** — enables hosting (the workflow can't self-enable).
+2. **About → ⚙ → Topics**: add `meta-portal-widget` — enables discovery.
 
 ---
 
