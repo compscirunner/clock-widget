@@ -34,8 +34,8 @@
     color: var(--fg, #eaeaea);
   }
   #time { font-variant-numeric: tabular-nums; font-weight: 600;
-          font-size: 18vw; line-height: 1; letter-spacing: .02em;
-          white-space: nowrap; }
+          font-size: 14vw; line-height: 1; letter-spacing: .02em;
+          white-space: nowrap; }   /* JS scales this to fit the viewport width */
   #date { font-size: 5vw; opacity: .7; margin-top: 2vh; }
 </style>
 </head>
@@ -73,7 +73,19 @@
       timeEl.textContent = timeFmt.format(now);
       dateEl.textContent = showDate ? dateFmt.format(now) : "";
     }
+    // Scale the time to fit the viewport width so seconds / AM-PM never clip on
+    // narrower screens. tabular-nums keeps the width constant per config, so we
+    // only need to fit on load + resize.
+    function fitTime() {
+      timeEl.style.fontSize = "20vw";
+      const w = timeEl.scrollWidth || 1;
+      let vw = 20 * (window.innerWidth * 0.94) / w;
+      vw = Math.max(6, Math.min(24, vw));
+      timeEl.style.fontSize = vw.toFixed(1) + "vw";
+    }
     tick();
+    fitTime();
+    window.addEventListener("resize", fitTime);
     setInterval(tick, showSec ? 1000 : 15000);
   </script>
 </body>
