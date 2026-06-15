@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Clock</title>
+<!--
+  A Portal widget is ONE self-contained HTML file like this. Copy its shape to
+  make your own.
+
+  USER CONFIG arrives as URL query parameters. The host appends them based on the
+  "urlParams" map in meta-portal-widget.json, e.g.:
+    ?tz=America/Boise&format=24&seconds=true&date=true&color=%23eaeaea
+  Read them here with URLSearchParams. Always provide defaults so the widget also
+  works with no params at all.
+
+  RULES OF THUMB for a good widget:
+   - one file, inline CSS + JS, no build step
+   - fill the whole viewport, look fine on a TV from across the room
+   - dark-friendly (these panels are often in dim rooms)
+   - no network calls except ones you declare; keyless APIs are best
+-->
+<style>
+  :root { color-scheme: dark; }
+  html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    background: var(--bg, #000);
+    font-family: -apple-system, "Segoe UI", Roboto, system-ui, sans-serif;
+  }
+  #wrap {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--fg, #eaeaea);
+  }
+  #time { font-variant-numeric: tabular-nums; font-weight: 600;
+          font-size: 22vw; line-height: 1; letter-spacing: .02em; }
+  #date { font-size: 5vw; opacity: .7; margin-top: 2vh; }
+</style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="time">--:--</div>
+    <div id="date"></div>
+  </div>
+  <script>
+    // ---- read config from the URL, with sensible defaults ----
+    const q = new URLSearchParams(location.search);
+    const use24    = q.get("format") === "24";        // default 12-hour
+    const showSec  = q.get("seconds") === "true";      // default off
+    const showDate = q.get("date") !== "false";        // default on
+    const tz       = q.get("tz") || undefined;         // undefined = device local zone
+    const fg       = q.get("color") || "#eaeaea";
+    const bg       = q.get("bg") || "#000000";
+
+    document.documentElement.style.setProperty("--fg", fg);
+    document.documentElement.style.setProperty("--bg", bg);
+
+    const timeFmt = new Intl.DateTimeFormat([], {
+      hour: "2-digit", minute: "2-digit",
+      ...(showSec ? { second: "2-digit" } : {}),
+      hour12: !use24, timeZone: tz,
+    });
+    const dateFmt = new Intl.DateTimeFormat([], {
+      weekday: "long", month: "long", day: "numeric", timeZone: tz,
+    });
+
+    const timeEl = document.getElementById("time");
+    const dateEl = document.getElementById("date");
+    function tick() {
+      const now = new Date();
+      timeEl.textContent = timeFmt.format(now);
+      dateEl.textContent = showDate ? dateFmt.format(now) : "";
+    }
+    tick();
+    setInterval(tick, showSec ? 1000 : 15000);
+  </script>
+</body>
+</html>

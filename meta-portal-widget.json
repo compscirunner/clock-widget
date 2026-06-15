@@ -1,0 +1,25 @@
+{
+  "name": "Clock",
+  "description": "A big, clean clock — configurable time zone, 12/24-hour, seconds, date and color. This repo is also the example/template for making your own Portal widget; see MAKE-A-WIDGET.md.",
+  "entry": "index.html",
+  "dwellSec": 30,
+  "aspect": "16:9",
+  "author": "Portal Widgets example",
+  "homepage": "https://github.com/compscirunner/clock-widget",
+  "config": [
+    { "key": "timezone", "type": "text", "label": "Time zone", "required": false,
+      "help": "IANA name like America/Boise. Blank = the Portal's local zone." },
+    { "key": "format", "type": "select", "label": "Hour format", "options": ["12", "24"], "default": "12" },
+    { "key": "seconds", "type": "boolean", "label": "Show seconds", "default": "false" },
+    { "key": "showDate", "type": "boolean", "label": "Show date", "default": "true" },
+    { "key": "color", "type": "text", "label": "Text color (hex)", "default": "#eaeaea" }
+  ],
+  "urlParams": {
+    "tz": "{timezone}",
+    "format": "{format}",
+    "seconds": "{seconds}",
+    "date": "{showDate}",
+    "color": "{color}"
+  },
+  "permissions": []
+}

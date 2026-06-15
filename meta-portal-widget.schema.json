@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/compscirunner/clock-widget/meta-portal-widget.schema.json",
+  "title": "meta-portal-widget manifest",
+  "description": "The manifest at the root of a Portal widget repo (a public GitHub repo tagged with the topic 'meta-portal-widget').",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": { "type": "string", "description": "Display name in the gallery." },
+    "description": { "type": "string", "description": "One-line summary shown in the gallery." },
+    "entry": {
+      "type": "string",
+      "description": "Relative path to the widget's HTML, e.g. 'index.html'. The host serves it via jsDelivr from this repo, so NO hosting setup is needed. Use this for simple static widgets.",
+      "default": "index.html"
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Absolute URL to load instead of 'entry'. Only needed when the widget must be hosted elsewhere (e.g. it has a build step deployed to GitHub Pages). Prefer 'entry' when possible."
+    },
+    "dwellSec": {
+      "type": "integer",
+      "description": "Seconds to show this widget before the carousel advances. 0 = the widget self-cycles (host uses a default, still rotates).",
+      "default": 30
+    },
+    "aspect": { "type": "string", "description": "Layout hint, e.g. '16:9'." },
+    "author": { "type": "string" },
+    "homepage": { "type": "string", "format": "uri" },
+    "permissions": {
+      "type": "array",
+      "description": "Reserved. Empty = a pure sandboxed web page with no special host capabilities (the only supported mode today).",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "config": {
+      "type": "array",
+      "description": "User-configurable fields. The host renders a form from these at add-time and stores the values.",
+      "items": {
+        "type": "object",
+        "required": ["key", "type", "label"],
+        "properties": {
+          "key": { "type": "string", "description": "Identifier; referenced by urlParams as {key}." },
+          "type": { "enum": ["text", "number", "boolean", "select", "secret", "location"] },
+          "label": { "type": "string" },
+          "help": { "type": "string" },
+          "required": { "type": "boolean", "default": false },
+          "default": { "type": "string", "description": "Default value. '@global.location' inherits the user's shared location." },
+          "options": { "type": "array", "items": { "type": "string" }, "description": "Choices for type 'select'." }
+        }
+      }
+    },
+    "urlParams": {
+      "type": "object",
+      "description": "Maps config onto the widget URL's query string. Values are templates with tokens: {key} (scalar), and for a 'location' field {key.name}, {key.lat}, {key.lon}, {key.json} (=> {\"lat\":..,\"lon\":..}). A param whose token has no value is dropped, so the widget falls back to its own defaults.",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}
