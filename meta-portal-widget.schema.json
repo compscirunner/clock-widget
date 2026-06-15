@@ -32,6 +32,19 @@
       "items": { "type": "string" },
       "default": []
     },
+    "icon": {
+      "type": "string",
+      "description": "Optional path (relative to the repo) or URL to a square icon for gallery tiles."
+    },
+    "screenshots": {
+      "type": "array",
+      "description": "Optional paths (relative to the repo) or URLs to preview images. The first is used as the gallery thumbnail; otherwise the repo's OpenGraph image is used.",
+      "items": { "type": "string" }
+    },
+    "category": {
+      "type": "string",
+      "description": "Optional grouping label for the gallery, e.g. 'Clock', 'Weather', 'Ambient'."
+    },
     "config": {
       "type": "array",
       "description": "User-configurable fields. The host renders a form from these at add-time and stores the values.",
