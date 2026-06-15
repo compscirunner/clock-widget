@@ -53,6 +53,9 @@ Follow `meta-portal-widget.schema.json`. Minimal shape:
 - For location-based widgets, use a field of `"type": "location"` with
   `"default": "@global.location"` (inherits the user's shared location); reference it
   as `{location.json}` / `{location.name}` / `{location.lat}` / `{location.lon}`.
+- Add a **`screenshot.png`** (≈16:9) to the repo and list it as
+  `"screenshots": ["screenshot.png"]` — it becomes the gallery thumbnail on the Portal
+  and on reportal.dev (otherwise the repo's GitHub social image is used).
 
 ### Publish it (the clean path — you have GitHub access)
 Include this repo's `.github/workflows/pages.yml` in the new repo (copy it as-is) —
